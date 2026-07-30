@@ -20,7 +20,7 @@
 
         <div class="card-body">
 
-            <form action="{{ route('tasks.update',$task->id) }}" method="POST">
+            <form action="{{ route('tasks.update',$task->id) }}" method="POST">qcls
                 @if ($errors->any())
     <div class="alert alert-danger">
         <ul class="mb-0">
