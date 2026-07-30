@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Task;
 use App\Models\Project;
 use App\Models\User;
+use App\Http\Requests\StoreTaskRequest;
 
 class Taskcontroller extends Controller
 {
@@ -65,7 +66,7 @@ class Taskcontroller extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $r)
+    public function store(StoreTaskRequest $r)
     {
         /** @var \App\Models\User $user */
         $user = Auth::user();
@@ -73,16 +74,6 @@ class Taskcontroller extends Controller
         if (! $user->hasPermission('create_tasks')) {
             abort(403, 'You do not have permission to create tasks.');
         }
-
-        $r->validate([
-            'project_id' => 'required|exists:projects,id',
-            'assigned_to' => 'nullable|exists:users,id',
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'status' => 'required',
-            'priority' => 'required',
-            'deadline' => 'nullable|date',
-        ]);
 
         Task::create([
             'project_id' => $r->project_id,
