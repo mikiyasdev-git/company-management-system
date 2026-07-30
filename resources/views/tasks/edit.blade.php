@@ -21,9 +21,17 @@
         <div class="card-body">
 
             <form action="{{ route('tasks.update',$task->id) }}" method="POST">
-
-                @csrf
-                @method('PUT')
+                @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+@csrf
+   @method('PUT')
 
                 <!-- Project -->
                 <div class="mb-3">
