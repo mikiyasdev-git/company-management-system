@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\User;
+use App\Http\Requests\StoreProjectRequest;
+use App\Http\Requests\UpdateProjectRequest;
 
 class Projectcontroller extends Controller
 {
@@ -49,7 +51,7 @@ class Projectcontroller extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $r)
+    public function store(StoreProjectRequest $r)
     {
         /** @var \App\Models\User $user */
         $user = Auth::user();
@@ -57,15 +59,6 @@ class Projectcontroller extends Controller
         if (! $user->hasPermission('create_projects')) {
             abort(403, 'You do not have permission to create projects.');
         }
-
-        $r->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'start_date' => 'required|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
-            'user_id' => 'required|exists:users,id',
-        ]);
-
         Project::create($r->only('name', 'description', 'start_date', 'end_date', 'user_id'));
 
         return redirect()->route('projects.index')->with('success', 'Project created.');
@@ -98,7 +91,7 @@ class Projectcontroller extends Controller
     return view('projects.edit', compact('project', 'employees'));
 }
 
-public function update(Request $r, Project $project)
+public function update(UpdateProjectRequest $r, Project $project)
 {
     /** @var \App\Models\User $user */
     $user = Auth::user();
@@ -106,16 +99,6 @@ public function update(Request $r, Project $project)
     if (! $user->hasPermission('edit_projects')) {
         abort(403, 'You do not have permission to edit projects.');
     }
-
-    $r->validate([
-        'name' => 'required|min:3',
-        'description' => 'nullable',
-        'start_date' => 'required|date',
-        'end_date' => 'nullable|date|after_or_equal:start_date',
-        'user_id' => 'required|exists:users,id',
-        'status' => 'required',
-    ]);
-
     $project->update([
         'name' => $r->name,
         'description' => $r->description,
