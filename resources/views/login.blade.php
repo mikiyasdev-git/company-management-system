@@ -50,11 +50,18 @@
                         <div class="text-center mt-3">
                             <a href="/register">Create new account</a>
                         </div>
-
-                    </form>
-
+        <div class="form-check mb-3">
+            <input
+                type="checkbox"
+                class="form-check-input"
+                id="remember"
+                name="remember">
+            <label class="form-check-label" for="remember">
+                Remember Me
+            </label>
+        </div>
+             </form>
                 </div>
-
             </div>
         </div>
     </div>

@@ -53,10 +53,9 @@ class Authcontroller extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
-
         $credentials = $r->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, $r->boolean('remember'))) {
             /** @var \App\Models\User $user */
             $user = Auth::user();
 
