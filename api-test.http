@@ -1,0 +1,55 @@
+### Login API Test
+
+POST http://localhost:8000/api/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "admin@liqawunt.com",
+    "password": "2205@admin"
+}
+
+###
+
+### Get Authenticated User
+
+GET http://localhost:8000/api/user
+Accept: application/json
+Authorization: Bearer 11|Dh3N092fRyZpiAeDwhKvRhdSbZV1v63f8n8OU8d3a99d8509
+
+###
+
+### Logout
+
+POST http://localhost:8000/api/logout
+Accept: application/json
+Authorization: Bearer 11|Dh3N092fRyZpiAeDwhKvRhdSbZV1v63f8n8OU8d3a99d8509
+
+###
+
+### Register
+
+POST http://localhost:8000/api/register
+Content-Type: application/json
+
+{
+    "name": "Rashford",
+    "email": "rashy@gmail.com",
+    "password": "12345678",
+    "password_confirmation": "12345678"
+}
+
+###
+
+### Get All Projects
+
+GET http://localhost:8000/api/projects
+Accept: application/json
+
+###
+
+### Get All Projects
+
+GET http://localhost:8000/api/projects
+Accept: application/json
+Authorization: Bearer 16|4pjBwns8QdREMbgVFx3ipI3n6zEcvf2INjHbF2zCbb704c19
