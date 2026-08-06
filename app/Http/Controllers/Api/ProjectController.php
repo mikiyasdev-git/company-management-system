@@ -83,4 +83,22 @@ public function update(
         'Project updated successfully.'
     );
 }
+
+public function destroy(int $id): JsonResponse
+{
+    $deleted = $this->projectService->delete($id);
+
+    if (! $deleted) {
+        return $this->error(
+            'Project not found.',
+            null,
+            404
+        );
+    }
+
+    return $this->success(
+        null,
+        'Project deleted successfully.'
+    );
+}
 }

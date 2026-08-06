@@ -39,4 +39,9 @@ class ProjectService implements ProjectServiceInterface
 
     return $this->projectRepository->find($id);
 }
+
+public function delete(int $id): bool
+{
+    return $this->projectRepository->delete($id);
+}
 }
