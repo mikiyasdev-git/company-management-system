@@ -30,4 +30,9 @@ interface ReportServiceInterface
      * Delete a report.
      */
     public function delete(int $id);
+
+    public function approve(int $id);
+    public function reject(int $id, string $reason);
+
+
 }

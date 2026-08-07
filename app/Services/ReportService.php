@@ -62,5 +62,61 @@ class ReportService implements ReportServiceInterface
         return $this->reportRepository->delete($id);
     }
 
+   /**
+ * Approve a report.
+ */
+public function approve(int $id)
+{
+    $report = $this->reportRepository->find($id);
 
+    if (! $report) {
+        return null;
+    }
+
+    // Cannot approve twice
+    if ($report->status === 'approved') {
+        return false;
+    }
+
+    // Cannot approve a rejected report
+    if ($report->status === 'rejected') {
+        return 'rejected';
+    }
+
+    $report->update([
+        'status' => 'approved',
+        'approved_by' => Auth::id(),
+        'approved_at' => now(),
+        'rejection_reason' => null,
+    ]);
+
+    return $report->fresh();
+}
+public function reject(int $id, string $reason)
+{
+    $report = $this->reportRepository->find($id);
+
+    if (! $report) {
+        return null;
+    }
+
+    // Already rejected
+    if ($report->status === 'rejected') {
+        return false;
+    }
+
+    // Already approved
+    if ($report->status === 'approved') {
+        return 'approved';
+    }
+
+    $report->update([
+        'status' => 'rejected',
+        'approved_by' => Auth::id(),
+        'approved_at' => now(),
+        'rejection_reason' => $reason,
+    ]);
+
+    return $report->fresh();
+}
 }

@@ -11,6 +11,7 @@ use App\Http\Resources\ReportResource;
 use App\Services\Contracts\ReportServiceInterface;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
+use App\Http\Requests\Api\RejectReportRequest;
 
 class ReportController extends Controller
 {
@@ -120,6 +121,84 @@ public function destroy(int $id): JsonResponse
     return $this->success(
         null,
         'Report deleted successfully.'
+    );
+}
+/**
+ * Approve a report.
+ */
+public function approve(int $id): JsonResponse
+{
+    $result = $this->reportService->approve($id);
+
+    if ($result === null) {
+        return $this->error(
+            'Report not found.',
+            null,
+            404
+        );
+    }
+
+    if ($result === false) {
+        return $this->error(
+            'Report has already been approved.',
+            null,
+            409
+        );
+    }
+
+    if ($result === 'rejected') {
+        return $this->error(
+            'Rejected reports must be revised and resubmitted before approval.',
+            null,
+            409
+        );
+    }
+
+    return $this->success(
+        new ReportResource($result),
+        'Report approved successfully.'
+    );
+}
+/**
+ * Reject a report.
+ */
+public function reject(
+    RejectReportRequest $request,
+    int $id
+): JsonResponse
+{
+    $result = $this->reportService->reject(
+        $id,
+        $request->validated()['rejection_reason']
+    );
+
+    if ($result === null) {
+        return $this->error(
+            'Report not found.',
+            null,
+            404
+        );
+    }
+
+    if ($result === false) {
+        return $this->error(
+            'Report has already been rejected.',
+            null,
+            409
+        );
+    }
+
+    if ($result === 'approved') {
+        return $this->error(
+            'Approved reports cannot be rejected.',
+            null,
+            409
+        );
+    }
+
+    return $this->success(
+        new ReportResource($result),
+        'Report rejected successfully.'
     );
 }
 }

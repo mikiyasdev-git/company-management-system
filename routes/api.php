@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Api\ReportController;
+use App\Http\Controllers\Api\UserController;
 
 Route::post('/register', [AuthController::class, 'register']);
 
@@ -30,4 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
      Route::apiResource('tasks', TaskController::class);
      Route::apiResource('reports', ReportController::class);
+     Route::post('reports/{id}/approve', [ReportController::class, 'approve']);
+     Route::post('reports/{id}/reject',[ReportController::class, 'reject']);
+     Route::apiResource('users', UserController::class);
 });
